@@ -1,0 +1,35 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+
+<div class="cq-topbar">
+  <div>
+    <h1>My profile</h1>
+    <div class="subtitle">Your account details on Campus Queue.</div>
+  </div>
+</div>
+
+<div class="cq-card" style="max-width:520px;" id="profile-card">
+  <div class="mb-3">
+    <div class="stat-label">Full name</div>
+    <div class="fw-semibold" id="profile-name">{{ user['name'] }}</div>
+  </div>
+  <div class="mb-3">
+    <div class="stat-label">Email</div>
+    <div class="fw-semibold" id="profile-email">{{ user['email'] }}</div>
+  </div>
+  <div class="mb-3">
+    <div class="stat-label">Phone</div>
+    <div class="fw-semibold" id="profile-phone">{{ user['phone'] }}</div>
+  </div>
+  <div class="mb-3">
+    <div class="stat-label">Role</div>
+    <div class="fw-semibold text-capitalize" id="profile-role">{{ user['role'] }}</div>
+  </div>
+  <div class="mb-0">
+    <div class="stat-label">Account status</div>
+    <span class="badge-status badge-{{ user['status'] }}" id="profile-status">{{ user['status'] }}</span>
+  </div>
+</div>
+
+{% endblock %}

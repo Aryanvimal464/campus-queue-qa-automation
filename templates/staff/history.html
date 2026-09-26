@@ -1,0 +1,48 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Queue History{% endblock %}
+{% block content %}
+
+<div class="cq-topbar">
+  <div>
+    <h1>Queue history</h1>
+    <div class="subtitle">{% if dept %}Last 100 tokens for {{ dept['name'] }}{% endif %}</div>
+  </div>
+</div>
+
+{% if tokens %}
+<div class="cq-table">
+  <table class="table" id="staff-history-table">
+    <thead>
+      <tr>
+        <th>Token</th>
+        <th>Student</th>
+        <th>Service</th>
+        <th>Status</th>
+        <th>Requested</th>
+        <th>Completed</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for t in tokens %}
+      <tr id="history-row-{{ t['id'] }}">
+        <td class="fw-semibold">{{ t['token_number'] }}</td>
+        <td>{{ t['student_name'] }}</td>
+        <td>{{ t['service_name'] }}</td>
+        <td><span class="badge-status badge-{{ t['status'] }}">{{ t['status'] }}</span></td>
+        <td>{{ t['created_at'] }}</td>
+        <td>{{ t['completed_at'] or '—' }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="cq-card">
+  <div class="empty-state">
+    <div class="empty-icon">🕘</div>
+    <p class="mb-0">No tokens processed yet.</p>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

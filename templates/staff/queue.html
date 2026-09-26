@@ -1,0 +1,88 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Current Queue{% endblock %}
+{% block content %}
+
+<div class="cq-topbar">
+  <div>
+    <h1>Current queue</h1>
+    <div class="subtitle">{% if dept %}{{ dept['name'] }}{% else %}No department assigned{% endif %}</div>
+  </div>
+</div>
+
+{% for category, message in get_flashed_messages(with_categories=true) %}
+  <div class="alert-cq alert-cq-{{ category }} mb-3">{{ message }}</div>
+{% endfor %}
+
+{% if not dept %}
+  <div class="cq-card">
+    <div class="empty-state">
+      <div class="empty-icon">🏢</div>
+      <h2 class="h5">No department assigned</h2>
+      <p class="mb-0">Ask an admin to assign you to a department to start managing a queue.</p>
+    </div>
+  </div>
+{% else %}
+
+<div class="cq-card mb-4" style="max-width:560px;">
+  <div class="section-eyebrow mb-2">CURRENTLY SERVING</div>
+  {% if current %}
+    <div class="d-flex justify-content-between align-items-start">
+      <div>
+        <div class="ticket-token-number" id="current-serving-token">{{ current['token_number'] }}</div>
+        <div class="text-secondary" style="font-size:0.88rem;">{{ current['student_name'] }} &middot; {{ current['service_name'] }}</div>
+      </div>
+      <span class="badge-status badge-{{ current['status'] }}">{{ current['status'] }}</span>
+    </div>
+    <div class="d-flex gap-2 mt-3">
+      <form method="POST" action="{{ url_for('complete_token', token_id=current['id']) }}">
+        <button type="submit" class="btn btn-teal" id="complete-token-button">Mark Completed</button>
+      </form>
+      <form method="POST" action="{{ url_for('skip_token', token_id=current['id']) }}" data-confirm="Skip this token?">
+        <button type="submit" class="btn btn-outline-navy" id="skip-token-button">Skip</button>
+      </form>
+    </div>
+  {% else %}
+    <p class="text-secondary mb-3">No token is currently being served.</p>
+    <form method="POST" action="{{ url_for('call_next') }}">
+      <button type="submit" class="btn btn-amber" id="next-token-button">Call Next Token</button>
+    </form>
+  {% endif %}
+</div>
+
+<h2 class="h6 mb-3">Waiting ({{ waiting|length }})</h2>
+{% if waiting %}
+<div class="cq-table">
+  <table class="table" id="waiting-queue-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Token</th>
+        <th>Student</th>
+        <th>Service</th>
+        <th>Requested At</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for t in waiting %}
+      <tr id="waiting-row-{{ t['id'] }}">
+        <td>{{ loop.index }}</td>
+        <td class="fw-semibold">{{ t['token_number'] }}</td>
+        <td>{{ t['student_name'] }}</td>
+        <td>{{ t['service_name'] }}</td>
+        <td>{{ t['created_at'] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="cq-card">
+  <div class="empty-state">
+    <div class="empty-icon">✅</div>
+    <p class="mb-0">No students waiting right now.</p>
+  </div>
+</div>
+{% endif %}
+
+{% endif %}
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Generate Token{% endblock %}
+{% block content %}
+
+<div class="cq-topbar">
+  <div>
+    <h1>Generate a new token</h1>
+    <div class="subtitle">Pick a department and the service you need.</div>
+  </div>
+</div>
+
+{% for category, message in get_flashed_messages(with_categories=true) %}
+  {% if category == 'danger' %}
+    <div class="alert-cq alert-cq-danger mb-3" id="token-error">{{ message }}</div>
+  {% elif category == 'success' %}
+    <div class="alert-cq alert-cq-success mb-3" id="token-success">{{ message }}</div>
+  {% endif %}
+{% endfor %}
+
+{% if error %}
+  <div class="alert-cq alert-cq-danger mb-3" id="token-error">{{ error }}</div>
+{% endif %}
+
+{% if existing_token %}
+  <div class="alert-cq alert-cq-warning mb-3" id="active-token-warning">
+    You already have an active token
+    (<strong>{{ existing_token['token_number'] }}</strong> — {{ existing_token['status'] }}).
+    Cancel it or wait for it to complete before generating a new one.
+  </div>
+{% endif %}
+
+<div class="cq-card" style="max-width: 560px;">
+  <form method="GET" action="{{ url_for('generate_token') }}" id="department-filter-form">
+    <div class="mb-3">
+      <label class="form-label" for="department-select">Department</label>
+      <select class="form-select" id="department-select" name="department_id" {% if existing_token %}disabled{% endif %}>
+        <option value="">-- Select department --</option>
+        {% for dept in departments %}
+          <option value="{{ dept['id'] }}" {% if selected_dept and selected_dept|string == dept['id']|string %}selected{% endif %}>
+            {{ dept['name'] }} ({{ dept['code'] }})
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+  </form>
+
+  <form method="POST" action="{{ url_for('generate_token') }}" id="generate-token-form">
+    <input type="hidden" name="department_id" value="{{ selected_dept or '' }}">
+    <div class="mb-3">
+      <label class="form-label" for="service-select">Service</label>
+      <select class="form-select" id="service-select" name="service_id" {% if existing_token or not services %}disabled{% endif %}>
+        <option value="">-- Select service --</option>
+        {% for service in services %}
+          <option value="{{ service['id'] }}">{{ service['name'] }} (~{{ service['estimated_time'] }} min)</option>
+        {% endfor %}
+      </select>
+      {% if selected_dept and not services %}
+        <div class="field-hint text-danger">No active services found for this department.</div>
+      {% endif %}
+    </div>
+    <button type="submit" class="btn btn-amber w-100" id="generate-token-button" {% if existing_token %}disabled{% endif %}>
+      Generate Token
+    </button>
+  </form>
+</div>
+
+{% endblock %}

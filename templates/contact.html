@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Contact{% endblock %}
+{% block body %}
+<section class="container py-5">
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="section-eyebrow mb-2">GET IN TOUCH</div>
+      <h1 class="h2 mb-3">Contact the Campus Queue team</h1>
+      <p class="text-secondary mb-4">
+        Have a question about a department not yet on the platform, or found something that
+        isn't working right? Send us a note.
+      </p>
+
+      <form method="POST" action="{{ url_for('contact') }}" id="contact-form" novalidate>
+        <div class="mb-3">
+          <label class="form-label" for="contact-name">Full name</label>
+          <input type="text" class="form-control" id="contact-name" name="name" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="contact-email">Email</label>
+          <input type="email" class="form-control" id="contact-email" name="email" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="contact-message">Message</label>
+          <textarea class="form-control" id="contact-message" name="message" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" id="contact-submit-button">Send message</button>
+      </form>
+    </div>
+
+    <div class="col-lg-5 offset-lg-1 mt-5 mt-lg-0">
+      <div class="cq-card">
+        <div class="fw-bold mb-2" style="font-family:'Sora',sans-serif;">Campus Support Desk</div>
+        <p class="text-secondary mb-1" style="font-size:0.9rem;">support@campusqueue.edu</p>
+        <p class="text-secondary mb-0" style="font-size:0.9rem;">Mon – Sat, 9:00 AM – 5:00 PM</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,35 @@
+$kind: http-request
+name: http://127.0.0.1:5000/student/generate-token
+description: ""
+url: http://127.0.0.1:5000/student/generate-token
+method: GET
+body:
+  type: urlencoded
+  content:
+    email: student@test.com
+    password: Student@123
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status code is 200\", function () {\r
+
+      \    pm.expect(pm.response.code).to.equal(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response time is below 3000 ms\", function () {\r
+
+      \    pm.expect(pm.response.responseTime).to.be.below(3000);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response is not empty\", function () {\r
+
+      \    pm.expect(pm.response.text()).to.not.be.empty;\r
+
+      });"
+    language: text/javascript
+order: 1790456108234

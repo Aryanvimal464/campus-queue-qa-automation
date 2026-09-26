@@ -1,0 +1,67 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Service Management{% endblock %}
+{% block content %}
+
+<div class="cq-topbar">
+  <div>
+    <h1>Service management</h1>
+    <div class="subtitle">Add services offered by each department.</div>
+  </div>
+</div>
+
+{% for category, message in get_flashed_messages(with_categories=true) %}
+  <div class="alert-cq alert-cq-{{ category }} mb-3">{{ message }}</div>
+{% endfor %}
+{% if error %}
+  <div class="alert-cq alert-cq-danger mb-3" id="service-error">{{ error }}</div>
+{% endif %}
+
+<div class="cq-card mb-4" style="max-width:520px;">
+  <div class="fw-bold mb-3" style="font-family:'Sora',sans-serif;">Add a service</div>
+  <form method="POST" action="{{ url_for('admin_services') }}" id="add-service-form">
+    <div class="mb-3">
+      <label class="form-label" for="service-department-select">Department</label>
+      <select class="form-select" id="service-department-select" name="department_id" required>
+        <option value="">-- Select department --</option>
+        {% for dept in departments %}
+          <option value="{{ dept['id'] }}">{{ dept['name'] }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="service-name">Service name</label>
+      <input type="text" class="form-control" id="service-name" name="name" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="service-estimated-time">Estimated time (minutes)</label>
+      <input type="number" class="form-control" id="service-estimated-time" name="estimated_time" min="1" required>
+    </div>
+    <button type="submit" class="btn btn-primary" id="add-service-button">Add Service</button>
+  </form>
+</div>
+
+<div class="cq-table">
+  <table class="table" id="services-table">
+    <thead><tr><th>Service</th><th>Department</th><th>Est. Time</th><th>Status</th><th>Action</th></tr></thead>
+    <tbody>
+      {% for s in services %}
+      <tr id="service-row-{{ s['id'] }}">
+        <td class="fw-semibold">{{ s['name'] }}</td>
+        <td>{{ s['department_name'] }}</td>
+        <td>{{ s['estimated_time'] }} min</td>
+        <td><span class="badge-status badge-{{ s['status'] }}">{{ s['status'] }}</span></td>
+        <td>
+          <form method="POST" action="{{ url_for('toggle_service', service_id=s['id']) }}">
+            <button type="submit" class="btn btn-sm {% if s['status'] == 'active' %}btn-outline-navy{% else %}btn-teal{% endif %}"
+                    id="toggle-service-{{ s['id'] }}">
+              {% if s['status'] == 'active' %}Deactivate{% else %}Activate{% endif %}
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

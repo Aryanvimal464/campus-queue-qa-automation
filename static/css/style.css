@@ -1,0 +1,481 @@
+/* =========================================================
+   Campus Queue — Design Tokens
+   Palette:
+     --navy       : primary / institutional trust
+     --navy-deep  : sidebar / headers
+     --amber      : token / ticket accent
+     --teal       : secondary accent (queue movement)
+     --ink        : body text
+     --paper      : page background
+   Type:
+     Display  -> "Sora"   (headings, token numbers)
+     Body     -> "Inter"  (paragraphs, labels, tables)
+   ========================================================= */
+
+:root {
+  --navy: #1B2A4A;
+  --navy-deep: #121E36;
+  --navy-soft: #2C4270;
+  --amber: #F2A93B;
+  --amber-deep: #D98D1F;
+  --teal: #2AA9A0;
+  --teal-deep: #1E7F78;
+  --danger: #C1443C;
+  --success: #2E7D5B;
+  --ink: #1C2333;
+  --ink-soft: #5A6377;
+  --paper: #F5F6FA;
+  --card: #FFFFFF;
+  --border: #E3E6F0;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --shadow-card: 0 1px 2px rgba(18, 30, 54, 0.06), 0 6px 20px rgba(18, 30, 54, 0.06);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+h1, h2, h3, h4, h5, h6, .display-font {
+  font-family: "Sora", "Inter", sans-serif;
+  color: var(--navy-deep);
+  letter-spacing: -0.01em;
+}
+
+a { color: var(--teal-deep); text-decoration: none; }
+a:hover { color: var(--navy); }
+
+/* ---------- Public top navbar ---------- */
+.cq-navbar {
+  background: var(--navy-deep);
+  padding: 0.85rem 0;
+  border-bottom: 3px solid var(--amber);
+}
+.cq-navbar .navbar-brand {
+  font-family: "Sora", sans-serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.cq-navbar .navbar-brand .brand-mark {
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  background: var(--amber);
+  color: var(--navy-deep);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+.cq-navbar .nav-link {
+  color: rgba(255,255,255,0.82);
+  font-weight: 500;
+  padding: 0.5rem 0.9rem !important;
+}
+.cq-navbar .nav-link:hover,
+.cq-navbar .nav-link.active {
+  color: #fff;
+}
+.cq-navbar .btn-cq-outline {
+  border: 1px solid rgba(255,255,255,0.35);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 1rem;
+}
+.cq-navbar .btn-cq-outline:hover { background: rgba(255,255,255,0.08); }
+
+/* ---------- Buttons ---------- */
+.btn {
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  padding: 0.55rem 1.15rem;
+  font-size: 0.92rem;
+}
+.btn-primary {
+  background: var(--navy);
+  border-color: var(--navy);
+}
+.btn-primary:hover, .btn-primary:focus {
+  background: var(--navy-deep);
+  border-color: var(--navy-deep);
+}
+.btn-amber {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: var(--navy-deep);
+}
+.btn-amber:hover {
+  background: var(--amber-deep);
+  border-color: var(--amber-deep);
+  color: var(--navy-deep);
+}
+.btn-teal {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: #fff;
+}
+.btn-teal:hover { background: var(--teal-deep); border-color: var(--teal-deep); color: #fff; }
+.btn-outline-navy {
+  border: 1px solid var(--navy);
+  color: var(--navy);
+  background: transparent;
+}
+.btn-outline-navy:hover { background: var(--navy); color: #fff; }
+.btn-danger { background: var(--danger); border-color: var(--danger); }
+.btn:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+
+/* ---------- Hero (home page) ---------- */
+.cq-hero {
+  background: radial-gradient(circle at 15% 20%, var(--navy-soft) 0%, var(--navy-deep) 55%, var(--navy-deep) 100%);
+  color: #fff;
+  padding: 5.5rem 0 6rem;
+  position: relative;
+  overflow: hidden;
+}
+.cq-hero::after {
+  content: "";
+  position: absolute;
+  right: -60px; bottom: -60px;
+  width: 260px; height: 260px;
+  border-radius: 50%;
+  background: rgba(242, 169, 59, 0.15);
+}
+.cq-hero h1 {
+  color: #fff;
+  font-size: 2.7rem;
+  font-weight: 700;
+  max-width: 620px;
+}
+.cq-hero p.lead {
+  color: rgba(255,255,255,0.78);
+  max-width: 540px;
+  font-size: 1.08rem;
+}
+
+/* Ticket-style token preview on home page */
+.ticket-card {
+  background: #fff;
+  border-radius: var(--radius-md);
+  padding: 1.75rem 1.6rem;
+  color: var(--ink);
+  box-shadow: 0 20px 45px rgba(0,0,0,0.28);
+  position: relative;
+}
+.ticket-card::before, .ticket-card::after {
+  content: "";
+  position: absolute;
+  width: 22px; height: 22px;
+  background: var(--navy-deep);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.ticket-card::before { left: -11px; }
+.ticket-card::after { right: -11px; }
+.ticket-card .ticket-divider {
+  border-top: 2px dashed var(--border);
+  margin: 1rem 0;
+}
+.ticket-token-number {
+  font-family: "Sora", sans-serif;
+  font-weight: 800;
+  font-size: 2.4rem;
+  color: var(--navy-deep);
+  letter-spacing: 0.02em;
+}
+
+/* ---------- Cards / stat blocks ---------- */
+.cq-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 1.5rem;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem 1.4rem;
+}
+.stat-card .stat-label {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.stat-card .stat-value {
+  font-family: "Sora", sans-serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--navy-deep);
+}
+
+/* ---------- Status badges ---------- */
+.badge-status {
+  display: inline-block;
+  padding: 0.32rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+.badge-WAITING { background: #FEF0DA; color: #92620C; }
+.badge-CALLED { background: #DCEEF4; color: #1E6E82; }
+.badge-IN_PROGRESS { background: #E1E9FE; color: #3546B4; }
+.badge-COMPLETED { background: #DCF3E6; color: #1E7A48; }
+.badge-SKIPPED { background: #F1E4F8; color: #7B379E; }
+.badge-CANCELLED { background: #FBE1DF; color: #A5342B; }
+.badge-active { background: #DCF3E6; color: #1E7A48; }
+.badge-inactive { background: #F1E3E1; color: #8A3A32; }
+
+/* ---------- Dashboard shell (sidebar layout) ---------- */
+.cq-shell { display: flex; min-height: 100vh; }
+.cq-sidebar {
+  width: 250px;
+  flex-shrink: 0;
+  background: var(--navy-deep);
+  color: #fff;
+  padding: 1.4rem 1rem;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.cq-sidebar .brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: "Sora", sans-serif;
+  font-weight: 700;
+  color: #fff;
+  padding: 0 0.5rem 1.2rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.cq-sidebar .brand .brand-mark {
+  width: 32px; height: 32px;
+  background: var(--amber);
+  color: var(--navy-deep);
+  border-radius: 8px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 800;
+}
+.cq-sidebar .role-tag {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--amber);
+  padding: 0 0.5rem;
+  margin-bottom: 0.6rem;
+  font-weight: 700;
+}
+.cq-sidebar .nav-link {
+  color: rgba(255,255,255,0.75);
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.15rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.cq-sidebar .nav-link:hover { background: rgba(255,255,255,0.06); color: #fff; }
+.cq-sidebar .nav-link.active {
+  background: var(--amber);
+  color: var(--navy-deep);
+  font-weight: 700;
+}
+.cq-sidebar .nav-divider {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  margin: 0.85rem 0;
+}
+.cq-sidebar .user-box {
+  margin-top: 1.2rem;
+  padding: 0.8rem;
+  background: rgba(255,255,255,0.05);
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+}
+.cq-sidebar .user-box .u-name { font-weight: 700; color: #fff; }
+.cq-sidebar .user-box .u-email { color: rgba(255,255,255,0.55); font-size: 0.75rem; word-break: break-all; }
+
+.cq-main {
+  flex-grow: 1;
+  padding: 1.8rem 2.2rem 3rem;
+  max-width: 100%;
+}
+.cq-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.6rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.cq-topbar h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+.cq-topbar .subtitle { color: var(--ink-soft); font-size: 0.9rem; margin-top: 0.15rem; }
+
+/* ---------- Tables ---------- */
+.cq-table {
+  background: var(--card);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.cq-table table { margin-bottom: 0; }
+.cq-table thead th {
+  background: var(--paper);
+  color: var(--ink-soft);
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  border-bottom: 1px solid var(--border);
+  padding: 0.8rem 1rem;
+}
+.cq-table tbody td {
+  padding: 0.75rem 1rem;
+  vertical-align: middle;
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--border);
+}
+.cq-table tbody tr:last-child td { border-bottom: none; }
+
+/* ---------- Forms ---------- */
+.cq-auth-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, var(--navy-deep) 0%, var(--navy) 45%, var(--paper) 45%);
+  padding: 2rem 1rem;
+}
+.cq-auth-card {
+  background: var(--card);
+  border-radius: var(--radius-md);
+  box-shadow: 0 25px 60px rgba(18,30,54,0.25);
+  padding: 2.4rem;
+  width: 100%;
+  max-width: 440px;
+}
+.cq-auth-card .brand {
+  display: flex; align-items: center; gap: 0.6rem;
+  margin-bottom: 1.6rem;
+}
+.cq-auth-card .brand .brand-mark {
+  width: 34px; height: 34px; border-radius: 8px;
+  background: var(--navy-deep); color: var(--amber);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 800; font-family: "Sora", sans-serif;
+}
+.form-label { font-weight: 600; font-size: 0.85rem; color: var(--ink); }
+.form-control, .form-select {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.85rem;
+  font-size: 0.92rem;
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(42, 169, 160, 0.15);
+}
+.field-hint { font-size: 0.78rem; color: var(--ink-soft); margin-top: 0.25rem; }
+.alert-cq {
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  padding: 0.75rem 1rem;
+  font-size: 0.88rem;
+}
+.alert-cq-danger { background: #FBE9E7; color: #8A2E27; border-color: #F3C6C1; }
+.alert-cq-success { background: #E3F5EA; color: #1E6B41; border-color: #BEE6CD; }
+.alert-cq-warning { background: #FEF3DD; color: #8A5F0C; border-color: #F6DFA8; }
+.alert-cq-info { background: #E1F0F6; color: #1E5E75; border-color: #B9DEEA; }
+
+/* ---------- Empty state ---------- */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: var(--ink-soft);
+}
+.empty-state .empty-icon {
+  font-size: 2.2rem;
+  margin-bottom: 0.6rem;
+}
+
+/* ---------- Toasts ---------- */
+.cq-toast-stack {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1080;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-width: 340px;
+}
+.cq-toast {
+  background: var(--navy-deep);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  font-size: 0.88rem;
+  border-left: 4px solid var(--amber);
+  animation: cq-toast-in 0.25s ease-out;
+}
+.cq-toast.success { border-left-color: var(--success); }
+.cq-toast.danger { border-left-color: var(--danger); }
+.cq-toast.warning { border-left-color: var(--amber); }
+@keyframes cq-toast-in {
+  from { transform: translateX(20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* ---------- Footer ---------- */
+.cq-footer {
+  background: var(--navy-deep);
+  color: rgba(255,255,255,0.65);
+  padding: 2.2rem 0;
+  font-size: 0.85rem;
+}
+.cq-footer a { color: rgba(255,255,255,0.85); }
+
+/* ---------- Utility ---------- */
+.text-teal { color: var(--teal-deep); }
+.text-amber { color: var(--amber-deep); }
+.section-eyebrow {
+  color: var(--teal-deep);
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 900px) {
+  .cq-shell { flex-direction: column; }
+  .cq-sidebar { width: 100%; height: auto; position: relative; }
+  .cq-main { padding: 1.4rem; }
+  .cq-hero h1 { font-size: 2.1rem; }
+}

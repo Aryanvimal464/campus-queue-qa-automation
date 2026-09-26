@@ -1,0 +1,61 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Reports{% endblock %}
+{% block content %}
+
+<div class="cq-topbar">
+  <div>
+    <h1>Reports</h1>
+    <div class="subtitle">Campus-wide queue performance.</div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="cq-card h-100">
+      <div class="fw-bold mb-3" style="font-family:'Sora',sans-serif;">Tokens by status</div>
+      {% for row in by_status %}
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="badge-status badge-{{ row['status'] }}">{{ row['status'] }}</span>
+          <span class="fw-semibold" id="report-status-{{ row['status'] }}">{{ row['c'] }}</span>
+        </div>
+      {% else %}
+        <p class="text-secondary mb-0">No token data yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="cq-card h-100">
+      <div class="fw-bold mb-3" style="font-family:'Sora',sans-serif;">Tokens by department</div>
+      {% for row in by_department %}
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span>{{ row['department_name'] }}</span>
+          <span class="fw-semibold">{{ row['c'] }}</span>
+        </div>
+      {% else %}
+        <p class="text-secondary mb-0">No departments yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="cq-card">
+      <div class="fw-bold mb-3" style="font-family:'Sora',sans-serif;">Average completion time by department</div>
+      <div class="cq-table">
+        <table class="table mb-0" id="avg-wait-table">
+          <thead><tr><th>Department</th><th>Avg. minutes from token to completion</th></tr></thead>
+          <tbody>
+            {% for d in departments %}
+            <tr>
+              <td>{{ d['name'] }}</td>
+              <td>{{ avg_wait_by_dept.get(d['id'], '—') }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

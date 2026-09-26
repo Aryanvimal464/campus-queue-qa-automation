@@ -1,0 +1,45 @@
+{% extends "base_dashboard.html" %}
+{% block title %}User Management{% endblock %}
+{% block content %}
+
+<div class="cq-topbar">
+  <div>
+    <h1>User management</h1>
+    <div class="subtitle">Activate or deactivate student and staff accounts.</div>
+  </div>
+</div>
+
+{% for category, message in get_flashed_messages(with_categories=true) %}
+  <div class="alert-cq alert-cq-{{ category }} mb-3">{{ message }}</div>
+{% endfor %}
+
+<div class="cq-table">
+  <table class="table" id="users-table">
+    <thead>
+      <tr><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>Department</th><th>Status</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+      <tr id="user-row-{{ u['id'] }}">
+        <td class="fw-semibold">{{ u['name'] }}</td>
+        <td>{{ u['email'] }}</td>
+        <td>{{ u['phone'] }}</td>
+        <td class="text-capitalize">{{ u['role'] }}</td>
+        <td>{{ u['department_name'] or '—' }}</td>
+        <td><span class="badge-status badge-{{ u['status'] }}" id="user-status-{{ u['id'] }}">{{ u['status'] }}</span></td>
+        <td>
+          <form method="POST" action="{{ url_for('toggle_user', user_id=u['id']) }}"
+                data-confirm="{% if u['status'] == 'active' %}Deactivate{% else %}Activate{% endif %} {{ u['name'] }}?">
+            <button type="submit" class="btn btn-sm {% if u['status'] == 'active' %}btn-outline-navy{% else %}btn-teal{% endif %}"
+                    id="toggle-user-{{ u['id'] }}">
+              {% if u['status'] == 'active' %}Deactivate{% else %}Activate{% endif %}
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

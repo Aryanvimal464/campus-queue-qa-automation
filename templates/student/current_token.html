@@ -1,0 +1,66 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Current Token{% endblock %}
+{% block content %}
+
+<div class="cq-topbar">
+  <div>
+    <h1>Queue status</h1>
+    <div class="subtitle">Live position for your current token.</div>
+  </div>
+</div>
+
+{% for category, message in get_flashed_messages(with_categories=true) %}
+  {% if category == 'success' %}
+    <div class="alert-cq alert-cq-success mb-3" id="token-success">{{ message }}</div>
+  {% elif category == 'danger' %}
+    <div class="alert-cq alert-cq-danger mb-3" id="token-error">{{ message }}</div>
+  {% endif %}
+{% endfor %}
+
+{% if token %}
+  <div class="cq-card" style="max-width:560px;">
+    <div class="d-flex justify-content-between align-items-start">
+      <div>
+        <div class="section-eyebrow mb-1">{{ token['department_name'] }}</div>
+        <div class="ticket-token-number" id="current-token-number">{{ token['token_number'] }}</div>
+        <div class="text-secondary" style="font-size:0.88rem;">{{ token['service_name'] }}</div>
+      </div>
+      <span class="badge-status badge-{{ token['status'] }}" id="current-token-status">{{ token['status'] }}</span>
+    </div>
+
+    <div class="ticket-divider"></div>
+
+    <div class="row text-center">
+      <div class="col">
+        <div class="stat-label">Queue Position</div>
+        <div class="stat-value" id="queue-position">{{ position if position is not none else '—' }}</div>
+      </div>
+      <div class="col">
+        <div class="stat-label">Est. Waiting Time</div>
+        <div class="stat-value" id="estimated-wait-time">{{ (wait_time ~ ' min') if wait_time is not none else '—' }}</div>
+      </div>
+    </div>
+
+    {% if token['status'] == 'WAITING' %}
+    <form method="POST" action="{{ url_for('cancel_token', token_id=token['id']) }}"
+          class="mt-4" data-confirm="Cancel this token? This cannot be undone.">
+      <button type="submit" class="btn btn-danger w-100" id="cancel-token-button">Cancel Token</button>
+    </form>
+    {% elif token['status'] == 'CALLED' %}
+      <div class="alert-cq alert-cq-info mt-4 mb-0" id="token-called-message">
+        You're being called right now — please proceed to the counter.
+      </div>
+    {% endif %}
+  </div>
+{% else %}
+  <div class="cq-card">
+    <div class="empty-state">
+      <div class="empty-icon">📍</div>
+      <h2 class="h5">No active token</h2>
+      <p class="mb-3">You don't have a token in the queue right now.</p>
+      <a href="{{ url_for('generate_token') }}" class="btn btn-amber" id="generate-token-button">Generate New Token</a>
+    </div>
+  </div>
+{% endif %}
+
+{% endblock %}

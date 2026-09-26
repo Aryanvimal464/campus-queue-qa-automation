@@ -1,0 +1,65 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Staff Dashboard{% endblock %}
+{% block content %}
+
+<div class="cq-topbar">
+  <div>
+    <h1>Welcome, {{ logged_in_user['name'] }}</h1>
+    <div class="subtitle">
+      {% if dept %}Assigned department: <strong>{{ dept['name'] }}</strong>{% else %}No department assigned yet — contact the admin.{% endif %}
+    </div>
+  </div>
+</div>
+
+{% if dept %}
+<div class="row g-3 mb-4">
+  <div class="col-sm-4">
+    <div class="stat-card">
+      <div class="stat-label">Waiting Now</div>
+      <div class="stat-value" id="stat-waiting-now">{{ waiting_count }}</div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="stat-card">
+      <div class="stat-label">Completed Today</div>
+      <div class="stat-value" id="stat-completed-today">{{ stats.completed }}</div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="stat-card">
+      <div class="stat-label">Skipped Today</div>
+      <div class="stat-value" id="stat-skipped-today">{{ stats.skipped }}</div>
+    </div>
+  </div>
+</div>
+
+<div class="cq-card mb-4" style="max-width:560px;">
+  <div class="section-eyebrow mb-2">CURRENTLY SERVING</div>
+  {% if current %}
+    <div class="d-flex justify-content-between align-items-start">
+      <div>
+        <div class="ticket-token-number" id="current-serving-token">{{ current['token_number'] }}</div>
+        <div class="text-secondary" style="font-size:0.88rem;">{{ current['student_name'] }} &middot; {{ current['service_name'] }}</div>
+      </div>
+      <span class="badge-status badge-{{ current['status'] }}">{{ current['status'] }}</span>
+    </div>
+    <div class="d-flex gap-2 mt-3">
+      <form method="POST" action="{{ url_for('complete_token', token_id=current['id']) }}">
+        <button type="submit" class="btn btn-teal" id="complete-token-button">Mark Completed</button>
+      </form>
+      <form method="POST" action="{{ url_for('skip_token', token_id=current['id']) }}" data-confirm="Skip this token?">
+        <button type="submit" class="btn btn-outline-navy" id="skip-token-button">Skip</button>
+      </form>
+    </div>
+  {% else %}
+    <p class="text-secondary mb-3">No token is currently being served.</p>
+    <form method="POST" action="{{ url_for('call_next') }}">
+      <button type="submit" class="btn btn-amber" id="next-token-button">Call Next Token</button>
+    </form>
+  {% endif %}
+</div>
+
+<a href="{{ url_for('staff_queue') }}" class="btn btn-outline-navy" id="go-to-queue-button">Go to full queue view</a>
+{% endif %}
+
+{% endblock %}

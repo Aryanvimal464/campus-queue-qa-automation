@@ -1,0 +1,58 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Department Management{% endblock %}
+{% block content %}
+
+<div class="cq-topbar">
+  <div>
+    <h1>Department management</h1>
+    <div class="subtitle">Add campus offices and toggle their availability.</div>
+  </div>
+</div>
+
+{% for category, message in get_flashed_messages(with_categories=true) %}
+  <div class="alert-cq alert-cq-{{ category }} mb-3">{{ message }}</div>
+{% endfor %}
+{% if error %}
+  <div class="alert-cq alert-cq-danger mb-3" id="department-error">{{ error }}</div>
+{% endif %}
+
+<div class="cq-card mb-4" style="max-width:520px;">
+  <div class="fw-bold mb-3" style="font-family:'Sora',sans-serif;">Add a department</div>
+  <form method="POST" action="{{ url_for('admin_departments') }}" id="add-department-form">
+    <div class="mb-3">
+      <label class="form-label" for="department-name">Department name</label>
+      <input type="text" class="form-control" id="department-name" name="name" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="department-code">Code</label>
+      <input type="text" class="form-control" id="department-code" name="code" maxlength="6" placeholder="e.g. SCH" required>
+      <div class="field-hint">Used as the prefix for token numbers, e.g. SCH-001.</div>
+    </div>
+    <button type="submit" class="btn btn-primary" id="add-department-button">Add Department</button>
+  </form>
+</div>
+
+<div class="cq-table">
+  <table class="table" id="departments-table">
+    <thead><tr><th>Name</th><th>Code</th><th>Status</th><th>Action</th></tr></thead>
+    <tbody>
+      {% for d in departments %}
+      <tr id="department-row-{{ d['id'] }}">
+        <td class="fw-semibold">{{ d['name'] }}</td>
+        <td>{{ d['code'] }}</td>
+        <td><span class="badge-status badge-{{ d['status'] }}">{{ d['status'] }}</span></td>
+        <td>
+          <form method="POST" action="{{ url_for('toggle_department', dept_id=d['id']) }}">
+            <button type="submit" class="btn btn-sm {% if d['status'] == 'active' %}btn-outline-navy{% else %}btn-teal{% endif %}"
+                    id="toggle-department-{{ d['id'] }}">
+              {% if d['status'] == 'active' %}Deactivate{% else %}Activate{% endif %}
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

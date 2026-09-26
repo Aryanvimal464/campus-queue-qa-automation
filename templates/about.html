@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}About{% endblock %}
+{% block body %}
+<section class="container py-5">
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="section-eyebrow mb-2">ABOUT CAMPUS QUEUE</div>
+      <h1 class="h2 mb-3">Why we built a queue system for a campus</h1>
+      <p class="text-secondary">
+        Every semester, students lose hours standing outside administrative offices for things
+        that take a staff member two minutes to process. Campus Queue replaces the physical line
+        with a virtual one: generate a token from anywhere, watch your position update, and walk
+        in only when you're close to being called.
+      </p>
+      <p class="text-secondary">
+        Departments manage their own queues independently. Staff can call the next student, skip
+        someone who hasn't shown up, or mark a request as completed, and every action is logged
+        for reporting and accountability.
+      </p>
+
+      <div class="row g-4 mt-2">
+        <div class="col-md-4">
+          <div class="cq-card h-100">
+            <div class="fw-bold" style="font-family:'Sora',sans-serif;">For Students</div>
+            <p class="text-secondary mb-0 mt-1" style="font-size:0.9rem;">One active token at a time, live position, and a full history of past visits.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="cq-card h-100">
+            <div class="fw-bold" style="font-family:'Sora',sans-serif;">For Staff</div>
+            <p class="text-secondary mb-0 mt-1" style="font-size:0.9rem;">A simple counter view: call, skip, complete — plus daily stats for the department.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="cq-card h-100">
+            <div class="fw-bold" style="font-family:'Sora',sans-serif;">For Admins</div>
+            <p class="text-secondary mb-0 mt-1" style="font-size:0.9rem;">Manage users, departments and services, and see reports across the whole campus.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

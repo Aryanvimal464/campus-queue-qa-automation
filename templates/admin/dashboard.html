@@ -1,0 +1,60 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+
+<div class="cq-topbar">
+  <div>
+    <h1>Welcome, {{ logged_in_user['name'] }}</h1>
+    <div class="subtitle">Campus-wide overview.</div>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-6 col-md-3">
+    <div class="stat-card"><div class="stat-label">Students</div><div class="stat-value" id="stat-students">{{ stats.students }}</div></div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-card"><div class="stat-label">Staff</div><div class="stat-value" id="stat-staff">{{ stats.staff }}</div></div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-card"><div class="stat-label">Departments</div><div class="stat-value" id="stat-departments">{{ stats.departments }}</div></div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-card"><div class="stat-label">Services</div><div class="stat-value" id="stat-services">{{ stats.services }}</div></div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-card"><div class="stat-label">Total Tokens</div><div class="stat-value" id="stat-tokens-total">{{ stats.tokens_total }}</div></div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-card"><div class="stat-label">Waiting Now</div><div class="stat-value" id="stat-tokens-waiting">{{ stats.tokens_waiting }}</div></div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-card"><div class="stat-label">Completed</div><div class="stat-value" id="stat-tokens-completed">{{ stats.tokens_completed }}</div></div>
+  </div>
+</div>
+
+<h2 class="h6 mb-3">Recent tokens</h2>
+{% if recent_tokens %}
+<div class="cq-table">
+  <table class="table" id="recent-tokens-table">
+    <thead>
+      <tr><th>Token</th><th>Student</th><th>Department</th><th>Status</th><th>Created</th></tr>
+    </thead>
+    <tbody>
+      {% for t in recent_tokens %}
+      <tr>
+        <td class="fw-semibold">{{ t['token_number'] }}</td>
+        <td>{{ t['student_name'] }}</td>
+        <td>{{ t['department_name'] }}</td>
+        <td><span class="badge-status badge-{{ t['status'] }}">{{ t['status'] }}</span></td>
+        <td>{{ t['created_at'] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="cq-card"><div class="empty-state"><p class="mb-0">No tokens generated yet.</p></div></div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,25 @@
+$kind: collection
+scripts:
+  - type: http:beforeRequest
+    code: "pm.test(\"Status code is 200\", function () {\r
+
+      \    pm.expect(pm.response.code).to.equal(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response time is below 3000 ms\", function () {\r
+
+      \    pm.expect(pm.response.responseTime).to.be.below(3000);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response is not empty\", function () {\r
+
+      \    pm.expect(pm.response.text()).to.not.be.empty;\r
+
+      });"
+    language: text/javascript

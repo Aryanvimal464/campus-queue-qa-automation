@@ -1,0 +1,48 @@
+{% extends "base_dashboard.html" %}
+{% block title %}All Tokens{% endblock %}
+{% block content %}
+
+<div class="cq-topbar">
+  <div>
+    <h1>All tokens</h1>
+    <div class="subtitle">Every token generated across campus (latest 200).</div>
+  </div>
+</div>
+
+<form method="GET" action="{{ url_for('admin_tokens') }}" class="mb-3 d-flex gap-2 align-items-end" style="max-width:320px;">
+  <div class="flex-grow-1">
+    <label class="form-label" for="status-filter">Filter by status</label>
+    <select class="form-select" id="status-filter" name="status" onchange="this.form.submit()">
+      <option value="" {% if not status_filter %}selected{% endif %}>All statuses</option>
+      {% for s in ['WAITING','CALLED','IN_PROGRESS','COMPLETED','SKIPPED','CANCELLED'] %}
+        <option value="{{ s }}" {% if status_filter == s %}selected{% endif %}>{{ s }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</form>
+
+{% if tokens %}
+<div class="cq-table">
+  <table class="table" id="all-tokens-table">
+    <thead>
+      <tr><th>Token</th><th>Student</th><th>Department</th><th>Service</th><th>Status</th><th>Created</th></tr>
+    </thead>
+    <tbody>
+      {% for t in tokens %}
+      <tr id="token-row-{{ t['id'] }}">
+        <td class="fw-semibold">{{ t['token_number'] }}</td>
+        <td>{{ t['student_name'] }}</td>
+        <td>{{ t['department_name'] }}</td>
+        <td>{{ t['service_name'] }}</td>
+        <td><span class="badge-status badge-{{ t['status'] }}">{{ t['status'] }}</span></td>
+        <td>{{ t['created_at'] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="cq-card"><div class="empty-state"><p class="mb-0">No tokens match this filter.</p></div></div>
+{% endif %}
+
+{% endblock %}

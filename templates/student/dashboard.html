@@ -1,0 +1,93 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Student Dashboard{% endblock %}
+{% block content %}
+
+<div class="cq-topbar">
+  <div>
+    <h1 id="welcome-heading">Welcome, {{ logged_in_user['name'] }}</h1>
+    <div class="subtitle">Here's what's happening with your queue today.</div>
+  </div>
+</div>
+
+{% if token %}
+  <div class="cq-card mb-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+      <div>
+        <div class="section-eyebrow mb-1">CURRENT TOKEN</div>
+        <div class="ticket-token-number" id="current-token-number">{{ token['token_number'] }}</div>
+        <div class="text-secondary mt-1" style="font-size:0.9rem;">
+          {{ token['department_name'] }} &middot; {{ token['service_name'] }}
+        </div>
+      </div>
+      <span class="badge-status badge-{{ token['status'] }}" id="current-token-status">{{ token['status'] }}</span>
+    </div>
+
+    <div class="row mt-4 g-3">
+      <div class="col-sm-4">
+        <div class="stat-card">
+          <div class="stat-label">Department</div>
+          <div class="stat-value" style="font-size:1.15rem;">{{ token['department_name'] }}</div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="stat-card">
+          <div class="stat-label">Queue Position</div>
+          <div class="stat-value" id="queue-position">{{ position if position is not none else '—' }}</div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="stat-card">
+          <div class="stat-label">Estimated Waiting Time</div>
+          <div class="stat-value" id="estimated-wait-time">{{ (wait_time ~ ' min') if wait_time is not none else '—' }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mt-4">
+      <a href="{{ url_for('current_token') }}" class="btn btn-outline-navy" id="view-queue-button">View Queue</a>
+      {% if token['status'] == 'WAITING' %}
+      <form method="POST" action="{{ url_for('cancel_token', token_id=token['id']) }}" data-confirm="Cancel this token? This cannot be undone.">
+        <button type="submit" class="btn btn-danger" id="cancel-token-button">Cancel Token</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+{% else %}
+  <div class="cq-card mb-4">
+    <div class="empty-state">
+      <div class="empty-icon">🎫</div>
+      <h2 class="h5">No active token</h2>
+      <p class="mb-3">Generate a token to join a department's virtual queue.</p>
+      <a href="{{ url_for('generate_token') }}" class="btn btn-amber" id="generate-token-button">Generate New Token</a>
+    </div>
+  </div>
+{% endif %}
+
+<div class="row g-3">
+  <div class="col-md-4">
+    <a href="{{ url_for('generate_token') }}" class="text-decoration-none">
+      <div class="cq-card h-100">
+        <div class="fw-bold" style="font-family:'Sora',sans-serif;">🎫 Generate New Token</div>
+        <p class="text-secondary mb-0 mt-1" style="font-size:0.88rem;">Join the queue for a department and service.</p>
+      </div>
+    </a>
+  </div>
+  <div class="col-md-4">
+    <a href="{{ url_for('current_token') }}" class="text-decoration-none">
+      <div class="cq-card h-100">
+        <div class="fw-bold" style="font-family:'Sora',sans-serif;">📍 View Queue</div>
+        <p class="text-secondary mb-0 mt-1" style="font-size:0.88rem;">Check your live position and wait time.</p>
+      </div>
+    </a>
+  </div>
+  <div class="col-md-4">
+    <a href="{{ url_for('student_history') }}" class="text-decoration-none">
+      <div class="cq-card h-100">
+        <div class="fw-bold" style="font-family:'Sora',sans-serif;">🕘 Token History</div>
+        <p class="text-secondary mb-0 mt-1" style="font-size:0.88rem;">{{ total_history }} token(s) generated so far.</p>
+      </div>
+    </a>
+  </div>
+</div>
+
+{% endblock %}
